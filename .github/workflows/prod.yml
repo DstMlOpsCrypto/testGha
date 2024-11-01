@@ -1,0 +1,63 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  pull_request:
+    branches: [ "main" ]
+    types: [opened, synchronize, reopened]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      EC2_SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      EC2_URL: ${{ secrets.EC2_HOST }}
+      EC2_USERNAME: ${{ secrets.EC2_USER }}
+      GIT_PAT: ${{ secrets.GIT_PAT }}
+    if: github.head_ref == 'dev'
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Setup SSH for EC2
+      uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
+      with:
+          EC2_SSH_PRIVATE_KEY: $EC2_SSH_PRIVATE_KEY
+          EC2_URL: $EC2_URL
+    # then you can run commands/scripts directly on the EC2 instance e.g.:a
+    - name: Remove app folder"
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "rm -rf ~/testGha"
+    # Install docker & docker compose
+    - name: Install docker
+      run: |
+        sudo apt install docker.io
+        sudo systemctl start docker
+        sudo systemctl enable docker
+        sudo apt install docker-compose
+    - name: Install python3
+      run: |
+        sudo apt install python3
+    # Install git and clone repo
+    - name: Install git
+      run: |
+        sudo apt install git
+    - name: Set Git Username and Password 
+      run: | 
+        ssh -o StrictHostKeyChecking=no ${{ EC2_USERNAME }}@${{ EC2_URL }} << 'EOF' 
+          git config --global user.name "dst" 
+          git config --global user.password "${{ GIT_PAT }}" 
+          EOF
+    - name: Clone repo
+      run: |
+        git clone https://github.com/DstMlOpsCrypto/testGha.git
+
+
+      
