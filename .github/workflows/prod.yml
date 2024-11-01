@@ -33,7 +33,7 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > private_key.pem
           chmod 600 private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem $EC2_USERNAME@$EC2_HOST 'rm -rf ~/app'
+          ssh -i private_key.pem $EC2_USERNAME@$EC2_HOST 'rm -rf ~/app'
 
       # Runs a set of commands using the runners shell      
       - name: Push repository to EC2
@@ -41,4 +41,5 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
         run: |
-          scp -o StrictHostKeyChecking=no -i private_key.pem -r ./* $EC2_USERNAME@$EC2_HOST:~/app/
+          ssh -i private_key.pem $EC2_USERNAME@$EC2_HOST 'mkdir app'
+          scp -i private_key.pem test.py $EC2_USERNAME@$EC2_HOST:~/app/
