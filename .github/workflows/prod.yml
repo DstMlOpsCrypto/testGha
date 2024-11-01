@@ -34,6 +34,9 @@ jobs:
     - name: Create folder app on EC2"
       run: |
         ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "mkdir -p ~/app"
+    - name: Verify folder creation
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL 'ls '
     - name: Copy file to EC2
       run: |
         scp -o StrictHostKeyChecking=no test.py $EC2_USERNAME@$EC2_URL:/app/
