@@ -41,4 +41,4 @@ jobs:
           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key ${EC2_USERNAME}@${EC2_HOST} 'mkdir app'
-          scp -o StrictHostKeyChecking=no -i test.py private_key ${EC2_USERNAME}@${EC2_HOST}:~/app/
+          scp -o StrictHostKeyChecking=no -i private_key test.py ${EC2_USERNAME}@${EC2_HOST}:~/app/
