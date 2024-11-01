@@ -32,4 +32,6 @@ jobs:
           EC2_URL: $EC2_URL
     # then you can run commands/scripts directly on the EC2 instance e.g.:a
     - name: Create a new file on the EC2 instance with "hello-world"
-      run: ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "mkdir -p ~/app"
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "mkdir -p ~/app"
+        scp -o StrictHostKeyChecking=no test.py $EC2_USERNAME@$EC2_URL:~/app
