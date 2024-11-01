@@ -38,26 +38,27 @@ jobs:
     # Install docker & docker compose
     - name: Install docker
       run: |
-        sudo apt install docker.io
-        sudo systemctl start docker
-        sudo systemctl enable docker
-        sudo apt install docker-compose
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "sudo yum update && sudo yum -y install docker"
+    - name: Add group membership for the default ec2-user
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "sudo usermod -a -G docker ec2-user && id ec2-user && newgrp docker"
+    - name: Install docker-compose
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "wget https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) && sudo mv docker-compose-$(uname -s)-$(uname -m) /usr/local/bin/docker-compose && sudo chmod -v +x /usr/local/bin/docker-compose"
+    - name: Enable docker service at AMI boot time
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "sudo systemctl enable docker.service && sudo systemctl start docker.service"
+    
+    - name: check Docker install
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "sudo systemctl status docker.service"
     - name: Install python3
       run: |
-        sudo apt install python3
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "sudo yum -y install python3"
     # Install git and clone repo
     - name: Install git
       run: |
-        sudo apt install git
-    - name: Set Git Username and Password 
-      run: | 
-        ssh -o StrictHostKeyChecking=no ${{ EC2_USERNAME }}@${{ EC2_URL }} << 'EOF' 
-          git config --global user.name "dst" 
-          git config --global user.password "${{ GIT_PAT }}" 
-          EOF
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "sudo yum -y install git"
     - name: Clone repo
       run: |
-        git clone https://github.com/DstMlOpsCrypto/testGha.git
-
-
-      
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git clone https://github.com/DstMlOpsCrypto/testGha.git"
