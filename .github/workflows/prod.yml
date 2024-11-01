@@ -35,23 +35,14 @@ jobs:
     - name: Remove app folder"
       run: |
         ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "rm -rf ~/testGha"
-    # Install docker & docker compose
-    - name: Install docker
-      run: |
-        sudo apt install docker.io
-        sudo systemctl start docker
-        sudo systemctl enable docker
-        sudo apt install docker-compose
+    # Docker already installed
     - name: Install python3
       run: |
         sudo apt install python3
-    # Install git and clone repo
-    - name: Install git
-      run: |
-        sudo apt install git
+    # Git already installed - clone repo
     - name: Set Git Username and Password 
       run: |
         ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git config --global user.name "dst" && git config --global user.password $GIT_PATH 
     - name: Clone repo
       run: |
-        git clone https://github.com/DstMlOpsCrypto/testGha.git
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git clone https://github.com/DstMlOpsCrypto/testGha.git"
