@@ -61,4 +61,4 @@ jobs:
         ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "sudo yum -y install git"
     - name: Clone repo
       run: |
-        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git clone https://github.com/DstMlOpsCrypto/testGha.git"
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git clone --single-branch --branch dev https://github.com/DstMlOpsCrypto/testGha.git"
