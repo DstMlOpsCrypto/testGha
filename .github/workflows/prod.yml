@@ -31,7 +31,13 @@ jobs:
           EC2_SSH_PRIVATE_KEY: $EC2_SSH_PRIVATE_KEY
           EC2_URL: $EC2_URL
     # then you can run commands/scripts directly on the EC2 instance e.g.:a
-    - name: Create a new file on the EC2 instance with "hello-world"
+    - name: Create folder app on EC2"
       run: |
         ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "mkdir -p ~/app"
         scp -o StrictHostKeyChecking=no test.py $EC2_USERNAME@$EC2_URL:~/app/
+    - name: Copy file to EC2
+      run: |
+        scp -o StrictHostKeyChecking=no test.py $EC2_USERNAME@$EC2_URL:/app/
+    - name: Verify file transfer
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL 'ls -l /app/test.py'
