@@ -52,9 +52,9 @@ jobs:
     - name: Set Git Username and Password 
       run: | 
         ssh -o StrictHostKeyChecking=no ${{ EC2_USERNAME }}@${{ EC2_URL }} << 'EOF' 
-          git config --global user.name "dst" 
-          git config --global user.password "${{ GIT_PAT }}" 
-          EOF
+        git config --global user.name "dst" 
+        git config --global user.password "${{ GIT_PAT }}" 
+        EOF
     - name: Clone repo
       run: |
         git clone https://github.com/DstMlOpsCrypto/testGha.git
