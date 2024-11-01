@@ -42,7 +42,7 @@ jobs:
     # Git already installed - clone repo
     - name: Set Git Username and Password 
       run: |
-        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git config --global user.name "dst" && git config --global user.password $GIT_PATH 
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git config --global user.name "dst" && git config --global user.password $GIT_PATH" 
     - name: Clone repo
       run: |
         ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git clone https://github.com/DstMlOpsCrypto/testGha.git"
