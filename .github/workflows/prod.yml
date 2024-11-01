@@ -37,6 +37,9 @@ jobs:
     - name: Verify folder creation
       run: |
         ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL 'ls '
+    # use checkout to point to root repository
+    - name: checkout repo
+      uses: actions/checkout@v4
     - name: Copy file to EC2
       run: |
         scp -o StrictHostKeyChecking=no test.py $EC2_USERNAME@$EC2_URL:/app/
