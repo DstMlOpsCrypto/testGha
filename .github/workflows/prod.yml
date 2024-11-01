@@ -51,7 +51,7 @@ jobs:
         sudo apt install git
     - name: Set Git Username and Password 
       run: |
-        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git config --global user.name "dst" && git config --global user.password "${{ GIT_PAT }}" 
+        ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "git config --global user.name "dst" && git config --global user.password $GIT_PATH 
     - name: Clone repo
       run: |
         git clone https://github.com/DstMlOpsCrypto/testGha.git
