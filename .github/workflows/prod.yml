@@ -42,7 +42,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Copy file to EC2
       run: |
-        scp -o StrictHostKeyChecking=no test.py $EC2_USERNAME@$EC2_URL:/app/
+        scp -o StrictHostKeyChecking=no test.py $EC2_USERNAME@$EC2_URL:~/app/
     - name: Verify file transfer
       run: |
         ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL 'ls -l /app/test.py'
